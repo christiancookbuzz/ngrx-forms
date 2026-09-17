@@ -1,4 +1,5 @@
 import { MarkAsUntouchedAction } from '../../actions';
+import { createFormArrayState } from '../../state';
 import { markAsUntouchedReducer } from './mark-as-untouched';
 import {
   FORM_CONTROL_ID,
@@ -46,5 +47,12 @@ describe(`form array ${markAsUntouchedReducer.name}`, () => {
     const state = setPropertiesRecursively(INITIAL_STATE, [['isTouched', true], ['isUntouched', false]]);
     const resultState = markAsUntouchedReducer(state, new MarkAsUntouchedAction(state.controls[0].id));
     expect(resultState).not.toBe(state);
+  });
+
+  it('should update state if touched and empty', () => {
+    const state = { ...createFormArrayState(FORM_CONTROL_ID, []), isTouched: true, isUntouched: false };
+    const resultState = markAsUntouchedReducer(state, new MarkAsUntouchedAction(FORM_CONTROL_ID));
+    expect(resultState.isTouched).toEqual(false);
+    expect(resultState.isUntouched).toEqual(true);
   });
 });

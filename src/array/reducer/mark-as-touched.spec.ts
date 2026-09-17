@@ -1,4 +1,5 @@
 import { MarkAsTouchedAction } from '../../actions';
+import { createFormArrayState } from '../../state';
 import { markAsTouchedReducer } from './mark-as-touched';
 import {
   FORM_CONTROL_ID,
@@ -60,5 +61,11 @@ describe(`form array ${markAsTouchedReducer.name}`, () => {
   it('should forward actions to children', () => {
     const resultState = markAsTouchedReducer(INITIAL_STATE, new MarkAsTouchedAction(INITIAL_STATE.controls[0].id));
     expect(resultState).not.toBe(INITIAL_STATE);
+  });
+
+  it('should mark itself as touched even if empty', () => {
+    const initialState = createFormArrayState(FORM_CONTROL_ID, []);
+    const resultState = markAsTouchedReducer(initialState, new MarkAsTouchedAction(FORM_CONTROL_ID));
+    expect(resultState.isTouched).toBe(true);
   });
 });

@@ -16,7 +16,7 @@ export function markAsTouchedReducer<TValue>(
 
   const controls = dispatchActionPerChild(state.controls, controlId => new MarkAsTouchedAction(controlId));
 
-  if (controls === state.controls) {
+  if (controls === state.controls && state.isTouched) {
     return state;
   }
 
